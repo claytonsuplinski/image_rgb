@@ -1,0 +1,103 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<style>
+table{
+	cellpadding:0px;
+	padding:0px;
+	border-width:0px;
+	border-collapse:collapse;
+}
+td{
+	padding:0px;
+	border-width:0px;
+	width:1px;
+	height:1px;
+}
+img, canvas{
+	display:none;
+}
+</style>
+
+</head>
+<body>
+
+<img src="moon.png" id="the-img">
+<canvas id="img-canvas">
+</canvas>
+
+<div id="table-img">
+</div>
+
+<div id="json-stringify">
+</div>
+
+<script>
+function load_image(){
+$.ajaxSetup({async: false});
+	var img = document.getElementById('the-img');
+
+	var canvas = document.getElementById('img-canvas');
+	var ctx = canvas.getContext('2d');
+	
+	//setTimeout(function(){}, 30000);
+
+	ctx.canvas.width = img.width;
+	ctx.canvas.height = img.height;
+
+	alert(ctx.canvas.height);
+
+	ctx.drawImage(img, 0, 0);
+	
+	//setTimeout(function(){}, 30000);
+
+	var image_data = ctx.getImageData(0, 0, img.width, img.height, 0, 0, 16200, 8100).data;
+	var rgba = [];
+	
+	//setTimeout(function(){}, 30000);
+
+	var tmp_html = "";
+	for(var i=0; i<image_data.length; i+=4){
+		if((i/4)%img.width == 0){
+			rgba.push([]);
+			tmp_html.slice(0,-1);
+			tmp_html += "<br>";
+		}
+		/*
+		var tmp_rgba = {
+			"r": image_data[i],
+			"g": image_data[i+1],
+			"b": image_data[i+2],
+			"a": image_data[i+3]
+		};
+		rgba[rgba.length-1].push(tmp_rgba);
+		*/
+		//rgba[rgba.length-1].push(image_data[i]);
+		tmp_html += image_data[i] + ",";
+	}
+	
+	//document.getElementById("json-stringify").innerHTML = JSON.stringify(rgba);
+	document.getElementById("json-stringify").innerHTML = tmp_html;
+
+	/* 
+	var tmp_table = "<table>";
+	for(var i=0; i<rgba.length; i++){
+		tmp_table += "<tr>";
+		for(var j=0; j<rgba[i].length; j++){
+			var color = rgba[i][j];
+			tmp_table += "<td style='background-color:rgba("+color.r+", "+color.g+", "+color.b+", "+color.a+");'>";
+			tmp_table += "</td>";
+		}
+		tmp_table += "</tr>";
+	}
+	tmp_table += "</table>";
+	
+	document.getElementById("table-img").innerHTML = tmp_table;
+	*/
+	
+}
+
+load_image();
+</script>
+</body>
+</html>
